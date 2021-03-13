@@ -34,6 +34,13 @@ def find_best_alpha(X_train, X_test, y_train, y_test):
     plot_tree_alpha_accuracy(ccp_alphas, train_scores, test_scores)
     return best_ccp_alpha
 
+def random_forest(df_train_features, df_train_labels):
+    print("RANDOM FOREST")
+    X_train, X_test, y_train, y_test = train_test_split(df_train_features, df_train_labels)
+    rf = RandomForestClassifier(n_estimators=300, random_state=42, criterion='entropy', max_features='log2')
+    rf = rf.fit(X_train, y_train)
+    print(cross_val_score(rf, X_test, y_test, cv=5))
+
 def decision_tree(df_train_features, df_train_labels):
     print("DECISION TREE")
     X_train, X_test, y_train, y_test = train_test_split(df_train_features, df_train_labels)
