@@ -39,7 +39,6 @@ max    4.012320e+12  -15.326580    0.872200   38.459990   13.799790   32.285820 
 ## Results
 Classification report on the XGBoost classifier evaluated on the test set
 ```
- [0.75       0.625      0.75       0.5625     0.93333333]
               precision    recall  f1-score   support
 
            0       0.81      0.52      0.63        91
