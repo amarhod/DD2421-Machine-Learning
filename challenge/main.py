@@ -4,25 +4,25 @@ from plotting import *
 
 
 def main():
-    (df_train_features, df_train_labels, label_encoder) = read_and_clean_data()
-    X_train, X_test, y_train, y_test = train_test_split(df_train_features, df_train_labels)
+    #Reading, partitioning (into train and test) and downsample data 
+    (df, label_encoder) = read_and_clean_data()
+    training, validation = partition_training_and_validation(df)
+    X, y = split_X_y(training)
+    X, y = downsample_data(X, y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y)
+    X_validation, y_validation = split_X_y(validation)
 
-    (X_validation, y_validation, label_encoder_V) = read_validation_data()
-
-    #CLASSIFIERS
-    #decision_tree(X_train, X_test, y_train, y_test)
-    #naive_bayes(X_train, X_test, y_train, y_test)
-    #support_vector_machine(X_train, X_test, y_train, y_test)
-    #rf = random_forest(X_train, X_test, y_train, y_test)
-    #voting(X_train, X_test, y_train, y_test)
     xgb = xgboost(X_train, X_test, y_train, y_test)
 
-    #PREDICTION AND SAVING
-    X_EVALUATE = read_evaluation_data()
-    y_predict = xgb.predict(X_EVALUATE)
-    y_predict_string_labels = label_encoder_V.inverse_transform(y_predict)
-    df_predicted_labels = pd.DataFrame(y_predict_string_labels)
-    save_prediction_to_txt(df_predicted_labels)
+    #Measuring accuracy of model with testing set
+    validation_prediction = xgb.predict(X_validation)
+    print(classification_report(validation_prediction, y_validation))
+    
+    #Predicting and saving the labels for the evaluation set
+    X_eval = read_evaluation_data()
+    y_predict = xgb.predict(X_eval)
+    y_predict = label_encoder.inverse_transform(y_predict) # Reverse transformation frin integer labels back to original string labels 
+    save_prediction_to_txt(pd.DataFrame(y_predict))
 
 
 if __name__ == '__main__':

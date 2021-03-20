@@ -5,18 +5,18 @@ from sklearn.metrics import plot_confusion_matrix
 
 
 #Plots a histogram for a given feature
-def plot_hist(df, feature='x1'):
+def plot_feat_hist(df, feature='x1'):
     sns.histplot(df[feature])
     plt.show()
 
 #Plots a heatmap for the covariance matrix 
-def plot_heat(df, feature='x1'):
+def plot_cov_heatmap(df, feature='x1'):
     cov_matrix = df.cov()
     plt.rcParams['figure.figsize'] = [len(cov_matrix), len(cov_matrix)]
     sns.heatmap(cov_matrix,
                 annot=True,
                 cbar = False,
-                cmap="YlGnBu",
+                cmap='YlGnBu',
                 xticklabels=range(len(cov_matrix)),
                 yticklabels=range(len(cov_matrix)))
     plt.show()
@@ -39,8 +39,8 @@ def plot_tree_confusion(dt, df_train_labels, X_test, y_test):
 #Plots the accuracies for both test and training set as a function of alpha
 def plot_tree_alpha_accuracy(ccp_alphas, train_scores, test_scores):
     fig, ax = plt.subplots()
-    ax.set_xlabel("alpha")
-    ax.set_ylabel("accuracy")
+    ax.set_xlabel('alpha')
+    ax.set_ylabel('accuracy')
     ax.plot(ccp_alphas, train_scores, label='training set')
     ax.plot(ccp_alphas, test_scores, label='testing set')
     plt.show()
